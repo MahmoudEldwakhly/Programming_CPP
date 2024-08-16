@@ -1,0 +1,1290 @@
+
+// 1- merge 2 dynamic allocated 1D arrays
+
+int main()
+{
+	int n, m;
+
+	cout << "enter size of array A: ";
+	cin >> n;
+	cout << "enter size of array B: ";
+	cin >> m;
+
+	int *A = new int[n];
+	int *B = new int[m];
+
+	cout << "enter elements of A: ";
+	for (int i = 0; i < n; i++)
+		cin >> A[i];
+	
+	cout << "enter elements of B: ";
+	for (int i = 0; i < m; i++)
+		cin >> B[i];
+
+	int *C = new int[n + m];
+
+	for (int i = 0; i < (n + m); i++) {
+		if (i < n) {
+			C[i] = A[i];
+		}
+		else {
+			C[i] = B[i - n];
+		}
+		cout <<"C= "<<C[i] << ", ";
+	}
+
+	delete[] A; //de-allocation so as not to cause memory leakage
+	delete[] B; //de-allocation so as not to cause memory leakage
+	delete[] C; //de-allocation so as not to cause memory leakage
+}
+
+-------------------------------------------------------------------------------------------------
+
+2-supermarket app using structs and dynamically allocated arrays
+
+#include<iostream>
+#include <iomanip>
+#include <cmath>
+#include <conio.h>
+#include <string>
+using namespace std;
+
+struct product {
+	string Pname;
+	int Pserial;
+	int Pquanitity;
+	float Pprice;
+};
+
+
+void InputProduct (product *P, int num) {
+	int i;
+
+	for (i = 0; i < num; i++) {
+		cout << "\n\nProduct # " << i + 1 <<endl<< endl;
+		cout << "Please enter the product name: ";
+		cin >> P[i].Pname;
+		cout << "Please enter the product serial number: ";
+		cin >> P[i].Pserial;
+		cout << "Please enter the product's quantity: ";
+		cin >> P[i].Pquanitity;
+		cout << "Please enter the product's price: ";
+		cin >> P[i].Pprice;
+	}
+}
+
+
+float total_price(product* p, int num) {
+
+	float invoice = 0;
+
+	for (int i = 0; i < num; i++) {
+		invoice += (p[i].Pprice * p[i].Pquanitity);
+	}
+
+	return invoice;
+}
+
+int main()
+{
+	int num;
+	float invoice=0;
+
+	cout << "how many products do you want to buy? ";
+	cin >> num;
+
+	product *cart = new product [num];
+	InputProduct(cart, num);
+
+	
+	cout << "\n\nyou need to pay: " << total_price(cart, num) << " pounds.\n";
+
+
+	delete[] cart; //de-allocation so as not to cause memory leakage
+}
+
+-----------------------------------------------------------------------------------------------------
+
+3- adds matrices A and B and puts them in C, could also work with multiplication
+
+#include<iostream>
+#include <iomanip>
+#include <cmath>
+#include <conio.h>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+	
+	int rows, cols, count=1;
+
+	cout << "please enter num of rows, columns: "<<endl;
+	cin >> rows >> cols;
+
+	int** matrixA = new int*[rows];
+	int** matrixB = new int*[rows];
+	int** matrixC = new int*[rows];
+
+	//creates both matrices
+	for (int i = 0; i < rows; i++) {
+		matrixA[i] = new int[cols];
+	}
+	for (int i = 0; i < rows; i++) {
+		matrixB[i] = new int[cols];
+	}
+	for (int i = 0; i < rows; i++) {
+		matrixC[i] = new int[cols];
+	}
+
+	//puts elements in matrix A,B
+	cout << "\nmatrix A\n";
+	for (int i = 0; i < rows; i++) {
+		cout << "\nenter elements of row # " << i + 1 << endl;
+		for (int j = 0; j < cols; j++) {
+			cin >> matrixA[i][j];
+		}
+	}
+	cout << "matrix B\n";
+	for (int i = 0; i < rows; i++) {
+		cout << "\nenter elements of row # " << i + 1 << endl;
+		for (int j = 0; j < cols; j++) {
+			cin >> matrixB[i][j];
+		}
+	}
+
+	// puts sum of A,B in C
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			matrixC[i][j] = (matrixA[i][j] + matrixB[i][j]);
+		}
+	}
+
+	cout << endl;
+	//displays the matrix
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++)
+			cout << " " << matrixC[i][j];
+		if (count = cols) {
+			cout << endl;
+			count = 1;
+		}
+		else count++;
+	}
+
+	//deletes the matrix
+	for (int i = 0; i < rows; i++) {
+		delete[] matrixA[i];
+		delete[] matrixB[i];
+		delete[] matrixC[i];
+	}
+
+		delete[] matrixA;//de-allocation so as not to cause memory leakage
+		delete[] matrixB;//de-allocation so as not to cause memory leakage
+		delete[] matrixC;//de-allocation so as not to cause memory leakage
+}
+
+----------------------------------------------------------------------------------------------------
+
+4- to find sum of numbers in 1st diagonal in a matrix
+
+// finds sum of numbers in 1st diagonal in A
+	float sum = 0;
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			if (i == j)sum += matrixA[i][j];
+		}
+	}
+	cout << "\nsum of diagonal is: " << sum << endl;
+
+-----------------------------------------------------------------------------------------------------------
+5- find sum of numbers in reverse diagonal
+
+// finds sum of numbers in 2nd diagonal in A
+	float sum = 0;
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			if (j==(cols-i))sum += matrixA[i][j];
+		}
+	}
+	cout << "\nsum of diagonal is: " << sum << endl;
+
+----------------------------------------------------------------------------------------------
+
+6-display the 2d array matrix
+
+//displays the matrix
+	int count = 0;
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++)
+			cout << " " << arr[i][j];
+		cout << endl;
+	}
+------------------------------------------------------------------------------------------------
+
+7-to check if number is palindrome using dynamic 1D array
+
+#include<iostream>
+#include <iomanip>
+#include <cmath>
+#include <conio.h>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+	
+	int size, rows, cols, count=1;
+	int test = 1;
+
+	cout << "please enter size of array: "<<endl;
+	cin >> size;
+
+	int* A = new int[size];
+
+	//puts elements in array
+	cout << "\narray A\n";
+	for (int i = 0; i < size; i++) {
+		cin>>A[i];
+	}
+	
+	// checks if array is palindrome
+	for (int i = 0; i <= size / 2; i++) {
+		if (A[i] != A[size - 1 - i]) test = 0;
+	}
+	if (test != 1)cout << "num is not palindrome";
+	else cout << "num is palindrome";
+
+	//deletes the matrix
+	
+	delete[] A;//de-allocation so as not to cause memory leakage
+}
+
+------------------------------------------------------------------------------------------------
+
+8- checks for lower or upper triangle of zeroes
+
+//example of upper triangle of zeroes
+//100
+//110
+//111
+
+//example of lowertriangle of zeroes
+//111
+//011
+//001
+
+#include<iostream>
+#include <iomanip>
+#include <cmath>
+#include <conio.h>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+
+	int rows, cols;
+	bool upperT = true;
+	bool lowerT = true;
+
+	cout << "please enter number of rows and columns: " << endl;
+	cin >> rows;
+	cin >> cols;
+
+	int** A = new int* [cols];
+
+	//creates matrix
+	for (int i = 0; i < rows; i++) {
+		A[i] = new int[cols];
+	}
+
+	//inputs elements in matrix
+	cout << "\nmatrix A\n";
+	for (int i = 0; i < rows; i++) {
+		cout << "\nenter elements of row # " << i + 1 << endl;
+		for (int j = 0; j < cols; j++) {
+			cin >> A[i][j];
+		}
+	}
+	int test = 1;
+	//checks for upper triangle
+	for (int i = 0; i < rows; i++)
+	{
+		for (int j = 0; j < cols; j++)
+		{
+			if (i > j) {
+				if (A[i][j] == 0) {
+					//do nothing
+				}
+				else {
+					lowerT = false;
+				}
+			}
+			if (i < j) {
+				if (A[i][j] == 0) {
+					//do nothing
+				}
+				else {
+					upperT = false;
+				}
+			}
+			if (i == j) {
+				continue;
+			}
+
+		}
+	}
+
+	if (upperT == true) {
+		cout << "The matrix is an upper triangular matrix" << endl;
+	}
+	if (lowerT == true) {
+		cout << "The matrix is a lower triangular matrix" << endl;
+	}
+	if (upperT == false && lowerT == false) cout << "matrix is neither upper now lower triangle";
+
+	//deletes the matrix
+	for (int i = 0; i < rows; i++) {
+		delete[] A[i];
+	}
+
+	delete[] A;//de-allocation so as not to cause memory leakage
+}
+
+------------------------------------------------------------------------------------------------------------------
+
+9- finds average of each row and column
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+void avgrowsandcollumns(int** arr, int size) {
+	float sum = 0;
+	float avg = 0;
+	float avgrow = 0;
+	float avgcollumn = 0;
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			sum += arr[i][j];
+		}
+		avgrow = sum / size;
+		cout << "The average of row " << i+1 << " is " << avgrow << endl;
+		sum = 0;
+	}
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < size; j++) {
+			sum += arr[j][i];
+		}
+		avgcollumn = sum / size;
+		cout << "The average of collumn " << i+1 << " is " << avgcollumn << endl;
+		sum = 0;
+	}
+}
+
+int main()
+{
+	int rows, cols;
+	cout << "Enter number of rows or columns: ";
+	cin >> rows, cols;
+
+	int** arr = new int* [rows];
+	for (int i = 0; i < rows; i++) {
+		arr[i] = new int[cols];
+	}
+
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++) {
+			cin>>arr[i][j];
+		}
+	}
+
+	//displays the matrix
+	int count = 0;
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++)
+			cout << " " << arr[i][j];
+		cout << endl;
+	}
+
+	avgrowsandcollumns(arr, rows);
+
+}
+--------------------------------------------------------------------------------------------------------
+
+10- transpose matrix
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+	int rows, clmns;
+	cout << "Enter the rows of the array: ";
+	cin >> rows;
+	cout << "Enter the clmns of the array: ";
+	cin >> clmns;
+	
+	int** arr = new int*[rows];
+	for (int i = 0; i < rows; i++) {
+		arr[i] = new int[clmns];
+	}
+
+	int** trns = new int * [clmns];
+	for (int i = 0; i < clmns; i++) {
+		trns[i] = new int[rows];
+	}
+
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < clmns; j++) {
+			cout << "Enter the element: ";
+			cin >> arr[i][j];
+		}
+	}
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < clmns; j++) {
+			cout << arr[i][j];
+		}
+		cout << endl;
+	}
+
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < clmns; j++) {
+			trns[j][i] = arr[i][j];
+		}
+	}
+	for (int i = 0; i < clmns; i++) {
+		for (int j = 0; j < rows; j++) {
+			cout << trns[i][j];
+		}
+		cout << endl;
+	}
+
+}
+---------------------------------------------------------------------------------------------------------
+
+11- ascending sort for dynamic 2d array
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+int main()
+{
+	int rows, cols;
+	int temp = 0;
+	cout << "Enter the number of rows: ";
+	cin >> rows;
+	cols = rows;
+	cout << "\n\n";
+	
+	int** A = new int*[rows];
+
+	for (int i = 0; i < rows; i++)
+		A[i] = new int[cols];
+
+	//enter elements
+	for (int i = 0; i < rows; i++) {
+		cout << "enter elements of rows # " << i + 1 << endl;
+		for (int j = 0; j < cols; j++) {
+			cin >> A[i][j];
+		}
+	}
+	
+	//display matrix before
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++)
+			cout << " " << A[i][j];
+		cout << endl;
+	}
+
+	cout << "\n\n";
+
+	//bubble sort
+	for (int k = 0; k < rows * cols; k++) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				if (j < cols - 1) {
+					if (A[i][j] > A[i][j + 1]) {
+						temp = A[i][j];
+						A[i][j] = A[i][j + 1];
+						A[i][j + 1] = temp;
+					}
+				}
+				if (j == cols - 1 && i != rows - 1) {
+					if (A[i][j] > A[i + 1][0]) {
+						temp = A[i + 1][0];
+						A[i + 1][0] = A[i][j];
+						A[i][j] = temp;
+					}
+				}
+			}
+		}
+	}
+
+
+	//displays matrix after
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < cols; j++)
+			cout << " " << A[i][j];
+		cout << endl;
+	}
+
+	for (int i = 0; i < rows; i++) {
+		delete[] A[i];
+	}
+
+	delete[] A;//de-allocation so as not to cause memory leakage
+
+}
+----------------------------------------------------------------------------------------------------------
+
+12- check a dynamic 2d array for magic square
+
+//a magic square matrix is a matrix where the sum of each rows equals the sum of each column...
+// equals the sum of each diagonal
+
+//example
+//492
+//357
+//816
+//the sum of each of them equals 15 
+
+#include<iostream>
+#include <iomanip>
+#include <cmath>
+#include <conio.h>
+#include <string>
+using namespace std;
+
+int magic = 0;
+
+void checkmagic(int** A, int rows, int cols) {
+	float srow = 0;
+	float scols = 0;
+	float sdiag = 0;
+	float temp1 = 0;
+	int check1 = 1;
+	int check2 = 1;
+	int check3 = 1;
+
+
+	for (int i = 0; i < rows; i++) {
+		A[i] = new int[cols];
+	}
+
+	for (int i = 0; i < rows; i++) {
+		cout << "\nenter elements of row # " << i + 1 << endl;
+		for (int j = 0; j < cols; j++) {
+			cin >> A[i][j];
+		}
+	}
+
+	for (int i = 0; i < rows; i++) {
+		srow = 0;
+		for (int j = 0; j < cols; j++) {
+			srow += A[i][j];
+		}
+		if (i==0) temp1 = srow;
+		if (srow != temp1) check1 = 0;
+	}
+
+	temp1 = 0;
+	for (int j = 0; j < cols; j++) {
+		scols = 0;
+		for (int i = 0; i < rows; i++) {
+			scols += A[i][j];
+		}
+		if (j == 0) temp1 = scols;
+		if (scols != temp1) check2 = 0;
+	}
+
+	temp1 = 0;
+	for (int i = 0; i < rows; i++) {
+		sdiag = 0;
+		for (int j = 0; j < cols; j++) {
+			sdiag += A[i][j];
+		}
+		if (i == 0) temp1 = sdiag;
+		if (sdiag != temp1) check3 = 0;
+	}
+
+
+	if (check1 == 1 && check2 == 1 && check3 == 1) magic = 1;
+
+}
+
+int main()
+{
+	int rows, cols;
+
+	cout << "please enter num of rows, columns: " << endl;
+	cin >> rows;
+	cols = rows;
+
+	int** A = new int* [rows];
+
+	checkmagic(A, rows, cols);
+
+	if (magic == 0)cout << "\nmatrix is not magic\n";
+	else if (magic == 1) cout << "\nmatrix is magic\n";
+	else cout << "error";
+
+	int test;
+	cin >> test;
+	if (test == 1)main();
+
+}
+
+--------------------------------------------------------------------------------------------------------
+13- to print this pattern using recursion
+    *
+   **
+  ***
+ ****
+
+int stars(int i) {
+	if (i == 0) return 0;
+	cout << '*';
+	stars(i-1);
+}
+
+int space(int k) {
+	if (k == 0) return 0;
+	cout << ' ';
+	space(k - 1);
+}
+
+int pattern(int n, int i) {
+	
+	if (n == 0) return 0;
+	space(n - 1);
+	stars(i);
+	cout << endl;
+	return pattern(n - 1, i+1);
+
+}
+
+int main()
+{
+	// n no of rows
+	// i no of stars
+	// k no of spaces
+	int n;
+	cin >> n;
+
+	pattern(n, 1);
+}
+--------------------------------------------------------------------------------------------------------------
+14- to print pattern using recursion
+
+****
+***
+**
+*
+
+int row(int i) {
+	if (i == 0) return 0;
+	cout << "*";
+	return row(i - 1);
+}
+
+int pattern(int n, int i) {
+	
+	if (n == 0) return 0;
+	row(i);
+	cout << endl;
+	return pattern(n - 1, i-1);
+
+}
+
+int main()
+{
+	// n no of rows
+	// i no of stars
+	int n, i;
+	cin >> n;
+	i = n;
+
+	pattern(n, i);
+}
+--------------------------------------------------------------------------------------------------------------------
+15- to print pattern using recursion
+
+*
+**
+***
+****
+
+int row(int i) {
+	char star = '*';
+	if (i == 0) return star;
+	cout << "*";
+	return row(i-1);
+}
+
+int pattern(int n, int i) {
+	
+	if (n == 0) return 0;
+	row(i);
+	cout << endl;
+	return pattern(n - 1, i+1);
+
+}
+
+int main()
+{
+	// n no of rows
+	// i no of stars
+	int n, i;
+	cin >> n;
+	i = 1;
+
+	pattern(n, i);
+}
+----------------------------------------------------------------------------------------------------------------
+16- examples for using recursion to calculate summition
+
+option A)
+ float calculate(int n) {
+	int static i;
+	i = 0;
+	if (i == n)return 2;
+	return calculate(n - 1) + (pow(2, n) + pow(3, n)) / pow(6, n);}
+
+option B)
+ int factorial(int n) {
+	if (n == 1) return n;
+	return n * factorial(n - 1);}
+float calculate(int n, int x) {
+	if (x == 0)return 0;
+	if (n == 0)return 1;
+	return calculate(n - 1, x) + (pow(x,n) / factorial(n));}
+-------------------------------------------------------------------------------------------------------
+17- write a function the computes the nth fibonacci number using recursion
+
+int fib(int n){
+	if (n == 1) return 0;
+	if (n == 2) return 1;
+	return (fib(n - 1) + fib(n - 2));
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	cout << fib(n);
+}
+-----------------------------------------------------------------------------------------------------------
+18- replace substring by another string
+//probably cannot use this code in the exam because the doctor doesn't approve of using external libraries... 
+//outside of the curriculum, but this code still works so you can use it for yourself
+// an alternate for this code can be found in point number 20 in this file
+
+#include<iostream>
+#include <iomanip>
+#include <cmath>
+#include <conio.h>
+#include <string>
+#include <regex>
+using namespace std;
+
+string S = "omar is smart, omar plays sports, omar is happy";
+	string s1 = "omar";
+	string s2 = "ali";
+
+	string Sn = regex_replace(S, regex(s1), s2);
+
+	if (S == Sn) cout << "substring not found\n";
+	else cout << "substring found and replaced\n";
+	cout << Sn;
+---------------------------------------------------------------------------------------------------------
+19- turn a string with no negative numbers into an integer
+
+option 1: using an array of integers
+
+	string s;
+	cin >> s;
+	int l = s.length();
+
+	int* test = new int[l];
+
+	for (int i = 0; i < s.length(); i++) {
+		test[i] = (s[i]-48);  
+		/*The idea is to use the ASCII value of the digits from 0 to 9 start from 48 – 57.
+			Therefore, to change the numeric character to an integer subtract 48 from the
+			ASCII value of the character will give the corresponding digit for the given character*/
+	}
+	for (int i = 0; i < s.length(); i++) {
+		cout<<test[i]<<endl;
+	}
+	delete[] test;
+
+option 2: using a normal integer
+
+	string s;
+	cin >> s;
+	int l = s.length();
+
+	int test=0;
+
+	for (int i = 0; i < s.length(); i++) {
+		test = test*10 + (s[i]-48);  
+		/*The idea is to use the ASCII value of the digits from 0 to 9 start from 48 – 57.
+			Therefore, to change the numeric character to an integer subtract 48 from the
+			ASCII value of the character will give the corresponding digit for the given character*/
+	}
+	cout << test;
+------------------------------------------------------------------------------------------------------------------------
+20- how to replace substring with another string 
+// you can probably use this code in the exam with no problems
+// but also double check with the doctor or T.A
+
+bool starts_with(string input, string pattern, int i) {
+
+	if (pattern.length() + i > input.length()) return false;
+
+	for (int k = 0; k < pattern.length(); k++) {
+		if (input[k + i] != pattern[k]) return false;
+	}
+	return true;
+}
+
+string replace_str(string input, string pattern, string swap) {
+
+	string result = "";
+	int size = input.length();
+
+	//example input: aabcdaaadam, pattern: aa, swap: x, result: xbcdxada
+	for (int i = 0; i < size; i++) {
+		if (input[i] != pattern[0]) result += input[i];
+		else { 
+			if (starts_with(input, pattern, i)) {
+				result += swap;
+				i += pattern.length() - 1;
+			}
+			else result += input[i];
+		}
+	}
+	if (input == result) cout << "\npattern was not found in input\n";
+	return result;
+}
+
+int main()
+{
+	
+	string input;
+	string pattern;
+	string swap;
+
+	cout << "enter input string\n";
+	getline(cin, input);
+	cout << "enter pattern to look for\n";
+	cin >> pattern;
+	cout << "enter replacement for pattern\n";
+	cin>> swap;
+
+	cout <<"output is:\n" << replace_str(input, pattern, swap) << endl;
+	
+	// this is to loop the program without exiting the terminal
+	int loop;
+	cin >>loop;
+	if (loop == 1) main();
+
+}
+// can also use char instead of strings and change to strlen(name_char) instead of name_string.length()
+--------------------------------------------------------------------------------------------------------------
+21- print all words that begin with a specific letter
+
+int main()
+{
+	string inp;
+
+	cout << "enter sentence:"<<endl;
+	getline(cin, inp);
+	// or if you used char[20] then take input by cin.getline(inp, 20);
+	//cout << "sentence is: " << inp<<endl;
+
+	for (int i = 0; i < inp.length(); i++) {
+		if (inp[i] == 'b') {
+			for (int j = i; j < inp.length(); j++) {
+				cout << inp[j];
+				if (inp[j] == ' ') {
+					i = j;
+					break;
+				}
+			}
+			cout << endl;
+			
+		}
+	}
+
+}
+
+option 2: take from the user char instead of string
+
+bool starts_with(char* input, char* pattern, int i) {
+
+	if (strlen(pattern) + i > strlen(input)) return false;
+
+	for (int k = 0; k < strlen(pattern); k++) {
+		if (input[k + i] != pattern[k]) return false;
+	}
+	return true;
+}
+
+string replace_str(char* input, char* pattern, char* swap) {
+
+	string result = "";
+	int size = strlen(input);
+
+	//example input: aabcdaaadam, pattern: aa, swap: x, result: xbcdxada
+	for (int i = 0; i < size; i++) {
+		if (input[i] != pattern[0]) result += input[i];
+		else {
+			if (starts_with(input, pattern, i)) {
+				result += swap;
+				i += strlen(pattern) - 1;
+			}
+			else result += input[i];
+		}
+	}
+	if (input == result) cout << "\npattern was not found in input\n";
+	return result;
+}
+
+int main()
+{
+
+	char input[40];
+	char pattern[40];
+	char swap[40];
+
+	cout << "enter input string\n";
+	cin.getline(input,40);
+	cout << "enter pattern to look for\n";
+	cin >> pattern;
+	cout << "enter replacement for pattern\n";
+	cin >> swap;
+
+	cout << "output is:\n" << replace_str(input, pattern, swap) << endl;
+
+	// this is to loop the program without exiting the terminal
+	int loop;
+	cin >> loop;
+	if (loop == 1) main();
+
+}
+----------------------------------------------------------------------------------------------------------------
+22- delete rows and columns that contain all zeroes in a matrix
+
+int main()
+{
+	int rows, cols;
+	int cr = 0, cc = 0;
+
+	cout << "enter number of rows: ";
+	cin >> rows;
+	cout << "enter number of cols: ";
+	cin >> cols;
+
+	int** a = new int* [rows];
+
+	for (int i = 0; i < rows; i++) {
+		a[i] = new int[cols];
+	}
+
+	//inputs elements in matrix
+	cout << "\nmatrix A\n";
+	for (int i = 0; i < rows; i++) {
+		cout << "\nenter elements of row # " << i + 1 << endl;
+		for (int j = 0; j < cols; j++) {
+			cin >> a[i][j];
+		}
+	}
+	// check rows and delete them
+	for (int i = 0; i < rows; i++) {
+		cr = 0;
+		for (int j = 0; j < cols; j++) {
+			if (a[i][j] == 1) cr = 1;
+		}
+		if (cr != 1) {
+			for (int k = i; k < rows; k++) {
+				for (int s = 0; s < cols; s++) {
+					if (k != rows - 1) a[k][s] = a[k + 1][s];
+					//else a[k][s] = '/0';
+					/*cout << a[k][s];
+					if (s == cols - 1)cout << endl*/;
+				}
+			}
+		}
+	}
+	// check columns and delete them
+	for (int j = 0; j < cols; j++) {
+		cc = 0;
+		for (int i = 0; i < rows; i++) {
+			if (a[i][j] == 1) cc = 1;
+		}
+		if (cc != 1) {
+			for (int k = j; k < cols; k++) {
+				for (int s = 0; s < rows; s++) {
+					if (k != cols - 1) a[s][k] = a[s][k+1];
+					else a[s][k] = '/0';
+				}
+			}
+		}
+	}
+
+
+	//displays the matrix
+	int count = 0;
+	for (int i = 0; i < rows-1; i++) {
+		for (int j = 0; j < cols-1; j++)
+			cout << " " << a[i][j];
+		cout << endl;
+	}
+
+	//deletes the matrix
+	for (int i = 0; i < rows; i++) {
+		delete[] a[i];
+	}
+
+	delete[] a;//de-allocation so as not to cause memory leakage
+}
+----------------------------------------------------------------------------------------------------------------
+23- print all anagrams in a string
+
+//what are anagrams
+// words that have the same letters but different orders
+//examples
+//elbow = below,  cat = act,  brag = grab,  arc = car
+
+void sort(char s[]) {
+
+	int l = strlen(s);
+	char t;
+
+	for (int i = 0; i < l - 1; i++) {
+		for (int j = i + 1; j < l; j++) {
+			if (s[i] > s[j]) {
+				t = s[i];
+				s[i] = s[j];
+				s[j] = t;
+			}
+		}
+	}
+}
+
+
+
+bool areAnagram(char s1[], char s2[]) {
+
+	int l1 = strlen(s1);
+	int l2 = strlen(s2);
+
+	if (l1 != l2) return 0;
+	/*cout << "before 1: " << s1 << endl;
+	cout << "before 2: " << s2 << endl;*/
+	//sort strings
+	sort(s1);
+	sort(s2);
+	/*cout << "after 1: " << s1 << endl;
+	cout << "after 2: " << s2 << endl;*/
+
+	//compare sorted strings
+	if (strcmp(s1, s2) == 0) return 1;
+	else return 0;
+}
+
+
+
+int main()
+{
+	const int size = 5;
+	char list[size][41] = { "act", "god", "cat", "dog", "tac" };
+	char s1[41], s2[41];
+
+	/*cout << "enter words";
+	for (int k = 0; k < size; k++) cin >> list[k];*/
+
+	for (int i = 0; i < size; i++) {
+		strcpy_s(s1, list[i]);
+		for (int j = i + 1; j < size; j++) {
+			strcpy_s(s2, list[j]);
+			if (areAnagram(s1, s2)) {
+				cout <<"\ngroup"<<i+1<<" : " << list[i] << " "<<list[j]<<endl;
+				//deleteword(list, size, j);
+
+			}
+		}
+		cout << endl;
+	}
+
+
+}// i think it doesnt work if you have 3 anagrams with the same letters
+-----------------------------------------------------------------------------------------------------------------
+24- take info of cars and motors implementing substructs and returning all cars with horse power> 120
+
+struct motor {
+	int hp;
+	int num_cyl;
+};
+
+struct car {
+	char manu[41];
+	int date;
+	motor engine;
+};
+
+
+int main()
+{
+	int num;
+	cout << "enter number of cars";
+	cin >> num;
+
+	car* cars = new car[num];
+
+	for (int i = 0; i < num; i++) {
+		cout << "\ncar # " << i + 1 << endl;
+		cout << "enter manufacturer name: ";
+		cin>>cars[i].manu;
+		cout << "enter manufactured year: ";
+		cin >> cars[i].date;
+		cout << "enter horse power: ";
+		cin>>cars[i].engine.hp;
+		cout << "enter number of cylinders: ";
+		cin>>cars[i].engine.num_cyl;
+
+	}
+
+	for (int j = 0; j < num; j++) {
+		if (cars[j].engine.hp > 120) {
+			cout << "\nthis car has more than 120 hp\n";
+			cout << "car # " << j + 1 << endl;
+			cout << "car manufacture is: " << cars[j].manu << endl;
+			cout << "car manufactured date is: " << cars[j].date << endl;
+			cout << "car horse power is: " << cars[j].engine.hp << endl;
+			cout << "number of cylinders is: " <<cars[j].engine.num_cyl << endl;
+		}
+	}
+
+}
+---------------------------------------------------------------------------------------------------------------
+25- ﻿Write a structure called Point that has x and y coordinates of a point.
+Then define a structure called Rectangle that has the data of a rectangle using the structure Point.
+return the triangle with the biggest area
+implement substructs
+
+struct Point
+{
+	float x;
+	float y;
+};
+
+struct Rectangle
+{
+	Point p1;
+	Point p2;
+	Point p3;
+	Point p4;
+	float area;
+};
+
+
+int main()
+{
+	int n;
+	
+	cout << "Enter no of rectangles:";
+	cin >> n;
+
+	Rectangle* R = new Rectangle[n];
+	float max;
+
+	for (int i = 0; i <= n - 1; i++)
+	{
+		cout << "For Rectangle " << i + 1 << ": " << endl;
+		cout << "Enter p1 coordinates:";
+		cin >> R[i].p1.x >> R[i].p1.y;
+		cout << "Enter p2 coordinates:";
+		cin >> R[i].p2.x >> R[i].p2.y;
+		cout << "Enter p3 coordinates:";
+		cin >> R[i].p3.x >> R[i].p3.y;
+		cout << "Enter p4 coordinates:";
+		cin >> R[i].p4.x >> R[i].p4.y;
+		R[i].area = fabs(R[i].p2.x - R[i].p1.x) * fabs(R[i].p2.y - R[i].p3.y);
+	}
+	max = R[0].area;
+	for (int i = 1; i <= n; i++) {
+		cout << "area of triangle # " << i << endl;
+		cout << R[i].area<<endl;
+		if (R[i].area > max) {
+			max = R[i].area;
+			cout << "The maximum rectangle area = " << max << endl;
+			cout << "it is area of triangle # " << i << endl;
+		}
+	}
+	// this code prints area 2 as garbage or a very big number
+}
+
+------------------------------------------------------------------------------------------------------------
+26- // previous exam question 
+﻿Write a C program that takes as parameters a string, a character and an integer 
+and prints the string with the character duplicated the same number of times as
+the integer value
+-for example: 
+For the string "world", the character 'o' and the number 3 the program will display the string "wooorld".
+For the string "CESS", the character 'C' and the number 2 the program will display the string "CCESS".
+
+int main()
+{
+
+	string word;
+	char letter;
+	char t;
+	int num;
+
+	cout << "enter sentence: ";
+	getline(cin, word);
+	cout << "enter letter: ";
+	cin >> letter;
+	cout << "enter num: ";
+	cin >> num;
+
+	for (int i = 0; i < word.length(); i++) {
+		if (word[i] == letter) {
+			for (int j = 0; j < num-1 ; j++) {
+				/*t = word[i + 1];
+				word[i + 1] = letter;
+				word[i + 2] = t;*/
+				cout << word[i];
+			}
+		}
+		cout << word[i];
+	}
+}
+------------------------------------------------------------------------------------------------------------
+
+                          BEST WISHES
+                          GOOD LUCK WITH YOUR EXAM
+                          
+
+
+
+
+
+
+
+
+
+
+
+
