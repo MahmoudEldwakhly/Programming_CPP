@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1684808802 source:d:\mechatronics sophomore\spring 2023\computer programming\project\major task programming\main.cpp
+	<iostream>
+	<iomanip>
+	<cstring>
+	<ctime>
+	<fstream>
+	<cmath>
+
